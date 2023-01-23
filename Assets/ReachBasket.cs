@@ -8,4 +8,15 @@ public class ReachBasket : MonoBehaviour
     {
         IKControl.Control.Drop(collision.transform);
     }*/
+    static  Animator textAnimator;
+
+    private void Start()
+    {
+        textAnimator = GetComponent<Animator>();
+    }
+    public static void PopUp()
+    {
+        textAnimator.SetTrigger("PopUpText");
+        //if()
+    }
 }

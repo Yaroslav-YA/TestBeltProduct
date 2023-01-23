@@ -146,10 +146,10 @@ public class IKControl : MonoBehaviour
     public /*static*/ void Drop(Transform fruit)
     {
         fruit.GetComponent<Rigidbody>().isKinematic = false;
-
         rightHandObj = null;
         isGrab = false;
         isNear = false;
         animator.SetTrigger("Idle");
+        ReachBasket.PopUp();
     }
 }
