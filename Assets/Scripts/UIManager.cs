@@ -11,10 +11,10 @@ public class UIManager : MonoBehaviour
     int min = 1;
     int max = 6;
     string[] fruits;
-    enum Fruits
+    public enum Fruits
     {
         Apple,
-        Orange,
+        Lemon,
         Banana
     }
     // Start is called before the first frame update
