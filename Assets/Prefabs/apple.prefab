@@ -125,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1044043159444249529}
   m_Layer: 0
-  m_Name: HandleApple
+  m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

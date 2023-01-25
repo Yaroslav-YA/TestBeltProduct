@@ -6,11 +6,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text task;
-    string task_sample="Collect ";
-    int min = 1;
-    int max = 6;
-    string[] fruits;
+    public static TMP_Text task;
+    public static string task_sample = "Collect ";
+    
     public enum Fruits
     {
         Apple,
@@ -18,17 +16,14 @@ public class UIManager : MonoBehaviour
         Banana
     }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        fruits = System.Enum.GetNames(typeof(Fruits));
-        //System.Random random = new System.Random();
-        task.text += task_sample+Random.Range(min, max) +" " + fruits[Random.Range(0,fruits.Length-1)]+'s';
-        
+        task = GetComponent<TMP_Text>();
+        //task.text += task_sample+IKControl.currentTaskNumber+" " + IKControl.currentTaskTag+'s';   
     }
 
-    // Update is called once per frame
-    void Update()
+    public static void UpdateTask(int currentTaskNumber,string currentTaskTag)
     {
-        
+        task.text = task_sample + currentTaskNumber + " " + currentTaskTag + 's';
     }
 }

@@ -8,10 +8,21 @@ public class IKControl : MonoBehaviour
     protected static Animator animator;
 
     public static IKControl Control;
-    
+
+    RaycastHit hit;
+
+    public static string currentTaskTag;
+    string handle = "Handle";
+    string[] fruits;
+
     public bool ikActive = false;
     public static bool isGrab = false;
     public bool isNear = false;
+
+    public static int currentTaskNumber;
+    int currentNumber = 0;
+    int min = 1;
+    int max = 6;
 
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
@@ -25,13 +36,17 @@ public class IKControl : MonoBehaviour
     public float speed = 0.1f;
     
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
         if (Control==null)
         {
             Control = this;
         }
+        fruits = System.Enum.GetNames(typeof(UIManager.Fruits));
+        currentTaskNumber = Random.Range(min, max);
+        currentTaskTag=fruits[Random.Range(0, fruits.Length - 1)];
+        UIManager.UpdateTask(currentTaskNumber,currentTaskTag);
     }
 
     private void Update()
@@ -59,6 +74,14 @@ public class IKControl : MonoBehaviour
                 {
                     rightHandObj.parent.position = Vector3.Lerp(rightHandObj.parent.position, dropPoint.position, speed * Time.deltaTime);
                 }
+            }
+        }
+        if (Input.GetMouseButtonDown(0)&&!isGrab)
+        {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit)){
+                //if(hit.transform.CompareTag(currentTaskTag))
+                rightHandObj = hit.transform.Find(handle);
+                lookObj = hit.transform;
             }
         }
     }
@@ -150,6 +173,20 @@ public class IKControl : MonoBehaviour
         isGrab = false;
         isNear = false;
         animator.SetTrigger("Idle");
-        ReachBasket.PopUp();
+        if (fruit.CompareTag(currentTaskTag))
+        {
+            ReachBasket.PopUp();
+            AddScore();
+        }
+    }
+
+    void AddScore()
+    {
+        currentNumber++;
+        if (currentNumber >= currentTaskNumber)
+        {
+            //Finish
+        }
+        UIManager.UpdateTask(currentTaskNumber - currentNumber, currentTaskTag);
     }
 }
