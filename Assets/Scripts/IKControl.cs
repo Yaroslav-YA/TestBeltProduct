@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
 public class IKControl : MonoBehaviour
@@ -8,6 +9,8 @@ public class IKControl : MonoBehaviour
     protected static Animator animator;
 
     public static IKControl Control;
+
+    public List<GameObject> disableOnFinish = new List<GameObject>();
 
     RaycastHit hit;
 
@@ -29,14 +32,20 @@ public class IKControl : MonoBehaviour
     public Transform lookObj = null;
     public Transform dropPoint = null;
 
+    Vector3 oldPosition;
+    Vector3 newPosition;
+
     public float middleDistance = 0.5f;
     public float nearDistance = 1;
     //float smooth = 0;
     [Range(0,1)]
     public float speed = 0.1f;
-    
 
-    void Awake()
+    public float lerp_speed=0.1f;
+    public float lerp=0;
+    public float height=0.5f;
+
+    void Start()
     {
         animator = GetComponent<Animator>();
         if (Control==null)
@@ -66,13 +75,22 @@ public class IKControl : MonoBehaviour
             }
             else
             {
-                if ((rightHandObj.parent.position - dropPoint.position).sqrMagnitude < nearDistance * nearDistance)
+                if ((rightHandObj.parent.position - dropPoint.position).sqrMagnitude < nearDistance * nearDistance/2)
                 {
                     Drop(rightHandObj.parent);
+                    lerp = 0;
                 }
                 else
                 {
-                    rightHandObj.parent.position = Vector3.Lerp(rightHandObj.parent.position, dropPoint.position, speed * Time.deltaTime);
+                    lerp += lerp_speed * Time.deltaTime;
+                    newPosition = Vector3.Lerp(/*rightHandObj.parent.position*/oldPosition, dropPoint.position, lerp);//save old position and calc from its
+                    if (lerp < 1)
+                    {
+
+                        newPosition.y+= Mathf.Sin(lerp * Mathf.PI)*height;
+                    }
+                    Debug.Log(newPosition.y) ;
+                    rightHandObj.parent.position = newPosition;
                 }
             }
         }
@@ -161,7 +179,9 @@ public class IKControl : MonoBehaviour
         //rightHandObj.parent = animator.GetBoneTransform(HumanBodyBones.RightHand);
         // if () ;
         fruit.GetComponent<Rigidbody>().isKinematic = true;
+        //fruit.GetComponent<Collider>().enabled = false;
         //fruit = animator.GetBoneTransform(HumanBodyBones.RightHand);
+        oldPosition = fruit.position;
         isGrab = true;
         animator.SetTrigger("Drop");
     }
@@ -169,7 +189,10 @@ public class IKControl : MonoBehaviour
     public /*static*/ void Drop(Transform fruit)
     {
         fruit.GetComponent<Rigidbody>().isKinematic = false;
+
+        //fruit.GetComponent<Collider>().enabled = true;
         rightHandObj = null;
+        lookObj = null;
         isGrab = false;
         isNear = false;
         animator.SetTrigger("Idle");
@@ -185,8 +208,25 @@ public class IKControl : MonoBehaviour
         currentNumber++;
         if (currentNumber >= currentTaskNumber)
         {
-            //Finish
+            FinishGame();
         }
         UIManager.UpdateTask(currentTaskNumber - currentNumber, currentTaskTag);
+    }
+
+    void FinishGame()
+    {
+        for(int i=0; i < disableOnFinish.Count; i++)
+        {
+            disableOnFinish[i].SetActive(false);
+        }
+
+        Camera.main.GetComponent<Animator>().SetTrigger("Dance");
+        animator.SetTrigger("Dance");
+        
+    }
+
+    public void ReloadLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

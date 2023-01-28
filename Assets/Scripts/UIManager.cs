@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     void Awake()
     {
         task = GetComponent<TMP_Text>();
+        //Debug.Log(task);
         //task.text += task_sample+IKControl.currentTaskNumber+" " + IKControl.currentTaskTag+'s';   
     }
 
