@@ -219,7 +219,7 @@ public class IKControl : MonoBehaviour
         {
             disableOnFinish[i].SetActive(false);
         }
-
+        UIManager.instance.WinText();
         Camera.main.GetComponent<Animator>().SetTrigger("Dance");
         animator.SetTrigger("Dance");
         
