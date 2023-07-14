@@ -10,7 +10,7 @@ public class IKControl : MonoBehaviour
 
     public static IKControl Control;
 
-    public List<GameObject> disableOnFinish = new List<GameObject>();
+    List<GameObject> disableOnFinish = new List<GameObject>();
 
     RaycastHit hit;
 
@@ -52,7 +52,7 @@ public class IKControl : MonoBehaviour
         {
             Control = this;
         }
-        fruits = System.Enum.GetNames(typeof(UIManager.Fruits));
+        fruits = System.Enum.GetNames(typeof(Enums.Fruits));
         currentTaskNumber = Random.Range(min, max);
         currentTaskTag=fruits[Random.Range(0, fruits.Length - 1)];
         UIManager.UpdateTask(currentTaskNumber,currentTaskTag);
@@ -198,12 +198,13 @@ public class IKControl : MonoBehaviour
         animator.SetTrigger("Idle");
         if (fruit.CompareTag(currentTaskTag))
         {
-            ReachBasket.PopUp();
-            AddScore();
+            EventManager.Drop();
+            /*ReachBasket.PopUp();
+            AddScore();*/
         }
     }
 
-    void AddScore()
+    /*void AddScore()
     {
         currentNumber++;
         if (currentNumber >= currentTaskNumber)
@@ -228,5 +229,5 @@ public class IKControl : MonoBehaviour
     public void ReloadLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    }*/
 }

@@ -12,12 +12,7 @@ public class UIManager : MonoBehaviour
     public Button reset_button;
     public static UIManager instance;
     
-    public enum Fruits
-    {
-        Apple,
-        Lemon,
-        Banana
-    }
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -26,13 +21,19 @@ public class UIManager : MonoBehaviour
             instance = this;
         }
         task = GetComponent<TMP_Text>();
+        ScoreManager.onTaskUpdate += UpdateTask;
+        ScoreManager.onTaskComplete += WinText;
         //Debug.Log(task);
         //task.text += task_sample+IKControl.currentTaskNumber+" " + IKControl.currentTaskTag+'s';   
     }
 
     public static void UpdateTask(int currentTaskNumber,string currentTaskTag)
     {
-        task.text = task_sample + currentTaskNumber + " " + currentTaskTag + 's';
+        task.text = task_sample + currentTaskNumber + " " + currentTaskTag;
+        if (currentTaskNumber > 1)
+        {
+            task.text += 's';
+        }
     }
 
     public void WinText()

@@ -13,6 +13,7 @@ public class ReachBasket : MonoBehaviour
     private void Start()
     {
         textAnimator = GetComponent<Animator>();
+        EventManager.onDropInBasket += PopUp;
     }
     public static void PopUp()
     {

@@ -30,7 +30,7 @@ public class PoolManager : MonoBehaviour
         }
     }
 
-    void GetFromPool(UIManager.Fruits type, Vector3 position)
+    void GetFromPool(Enums.Fruits type, Vector3 position)
     {
         for(int i=0; i < pool.Count; i++)
         {
@@ -62,7 +62,7 @@ public class PoolManager : MonoBehaviour
             Vector3 tempPosition = transform.position;
             tempPosition.z += Random.Range(-randomDistance, randomDistance);
             int tempType = Random.Range(0, prefabs.Count);
-            GetFromPool((UIManager.Fruits)tempType, tempPosition);
+            GetFromPool((Enums.Fruits)tempType, tempPosition);
             yield return new WaitForSeconds(timeBetween); 
         }
     }
