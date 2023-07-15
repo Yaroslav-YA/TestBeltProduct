@@ -23,7 +23,7 @@ public class IKControl : MonoBehaviour
     public bool isNear = false;
 
     public static int currentTaskNumber;
-    int currentNumber = 0;
+    //int currentNumber = 0;
     int min = 1;
     int max = 6;
 
@@ -40,6 +40,8 @@ public class IKControl : MonoBehaviour
     //float smooth = 0;
     [Range(0,1)]
     public float speed = 0.1f;
+    [Range(0, 1)]
+    public float headSpeed = 0.1f;
 
     public float lerp_speed=0.1f;
     public float lerp=0;
@@ -52,10 +54,11 @@ public class IKControl : MonoBehaviour
         {
             Control = this;
         }
-        fruits = System.Enum.GetNames(typeof(Enums.Fruits));
+        /*fruits = System.Enum.GetNames(typeof(Enums.Fruits));
         currentTaskNumber = Random.Range(min, max);
         currentTaskTag=fruits[Random.Range(0, fruits.Length - 1)];
-        UIManager.UpdateTask(currentTaskNumber,currentTaskTag);
+        UIManager.UpdateTask(currentTaskNumber,currentTaskTag);*/
+        ScoreManager.onTaskComplete += FinishGame;
     }
 
     private void Update()
@@ -119,8 +122,14 @@ public class IKControl : MonoBehaviour
                 // Set the look target position, if one has been assigned
                 if (lookObj != null)
                 {
-                    animator.SetLookAtWeight(1);
+                    animator.SetBool("LookAt Bool",true);
+                    animator.SetLookAtWeight(headSpeed);
+                    //Debug.Log("HeadSpeed"+headSpeed);
                     animator.SetLookAtPosition(lookObj.position);
+                }
+                else
+                {
+                    animator.SetBool("LookAt Bool", false);
                 }
 
                 // Set the right hand target position and rotation, if one has been assigned
@@ -135,14 +144,14 @@ public class IKControl : MonoBehaviour
                     animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                     //smooth += Mathf.Clamp(speed * Time.deltaTime,0,1);
                 }
-                if (leftHandObj != null)
+                /*if (leftHandObj != null)
                 {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
 
                     animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position); 
                     animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandObj.rotation);
-                }
+                }*/
 
             }
 
@@ -196,7 +205,7 @@ public class IKControl : MonoBehaviour
         isGrab = false;
         isNear = false;
         animator.SetTrigger("Idle");
-        if (fruit.CompareTag(currentTaskTag))
+        if (fruit.CompareTag(ScoreManager.GetCurrentTaskTag()))
         {
             EventManager.Drop();
             /*ReachBasket.PopUp();
@@ -213,19 +222,14 @@ public class IKControl : MonoBehaviour
         }
         UIManager.UpdateTask(currentTaskNumber - currentNumber, currentTaskTag);
     }
-
+    */
     void FinishGame()
     {
-        for(int i=0; i < disableOnFinish.Count; i++)
-        {
-            disableOnFinish[i].SetActive(false);
-        }
-        UIManager.instance.WinText();
         Camera.main.GetComponent<Animator>().SetTrigger("Dance");
         animator.SetTrigger("Dance");
         
     }
-
+    /*
     public void ReloadLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);

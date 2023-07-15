@@ -14,7 +14,7 @@ public class ScoreManager : MonoBehaviour
     int currentNumber;
     int currentTaskNumber;
     
-    string currentTaskTag;
+    static string currentTaskTag;
 
     [SerializeField] int min = 0;
     [SerializeField] int max = 5;
@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviour
     {
         string[] fruits = System.Enum.GetNames(typeof(Enums.Fruits));
         currentTaskNumber = Random.Range(min, max + 1);
-        currentTaskTag = fruits[Random.Range(0, fruits.Length - 1)];
+        currentTaskTag = fruits[Random.Range(0, fruits.Length)];
     }
     void AddScore()
     {
@@ -45,5 +45,10 @@ public class ScoreManager : MonoBehaviour
     void FinishGame()
     {
         onTaskComplete?.Invoke();       
+    }
+
+    public static string GetCurrentTaskTag()
+    {
+        return currentTaskTag;
     }
 }
