@@ -49,6 +49,7 @@ public class ScoreManager : MonoBehaviour
 
     public static string GetCurrentTaskTag()
     {
+        Debug.Log(currentTaskTag);
         return currentTaskTag;
     }
 }

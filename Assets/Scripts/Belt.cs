@@ -20,6 +20,6 @@ public class Belt : MonoBehaviour
     }
     private void OnCollisionStay(Collision collision)
     {
-        collision.gameObject.transform.Translate(belt_speed*Time.fixedDeltaTime, 0, 0);
+        collision.gameObject.transform.Translate(belt_speed*Time.fixedDeltaTime, 0, 0,this.transform);
     }
 }

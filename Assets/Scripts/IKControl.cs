@@ -10,7 +10,7 @@ public class IKControl : MonoBehaviour
 
     public static IKControl Control;
 
-    List<GameObject> disableOnFinish = new List<GameObject>();
+    //List<GameObject> disableOnFinish = new List<GameObject>();
 
     RaycastHit hit;
 
@@ -36,16 +36,18 @@ public class IKControl : MonoBehaviour
     Vector3 newPosition;
 
     public float middleDistance = 0.5f;
-    public float nearDistance = 1;
+    public float nearDistance = 0.1f;
     //float smooth = 0;
     [Range(0,1)]
-    public float speed = 0.1f;
+    public float speed = 0;
     [Range(0, 1)]
-    public float headSpeed = 0.1f;
+    public float headSpeed = 0;
+    [Range(0, 1)]
+    public float rigthHandRotationWeight = 0;
 
-    public float lerp_speed=0.1f;
+    public float lerp_speed=0.5f;
     public float lerp=0;
-    public float height=0.5f;
+    public float height=0.2f;
 
     void Start()
     {
@@ -135,11 +137,11 @@ public class IKControl : MonoBehaviour
                 // Set the right hand target position and rotation, if one has been assigned
                 if (rightHandObj != null)
                 {
-                    animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+                    /*animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-
+                    */
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, speed);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, speed);
+                   // animator.SetIKRotationWeight(AvatarIKGoal.RightHand, speed);
                     animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position); //Vector3.Lerp(animator.GetIKPosition(AvatarIKGoal.RightHand), rightHandObj.position,speed*Time.deltaTime));
                     animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                     //smooth += Mathf.Clamp(speed * Time.deltaTime,0,1);
@@ -197,6 +199,7 @@ public class IKControl : MonoBehaviour
     
     public /*static*/ void Drop(Transform fruit)
     {
+
         fruit.GetComponent<Rigidbody>().isKinematic = false;
 
         //fruit.GetComponent<Collider>().enabled = true;
