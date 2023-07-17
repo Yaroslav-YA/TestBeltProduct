@@ -38,7 +38,7 @@ public class PoolManager : MonoBehaviour
             {
                 pool[i].transform.position = position;
                 pool[i].transform.rotation =prefabs[(int)type].transform.rotation;
-                pool[i].transform.rotation.SetAxisAngle(Vector3.up, this.transform.rotation.eulerAngles.y);
+                pool[i].transform.Rotate(Vector3.up, this.transform.rotation.eulerAngles.y, Space.World);
                 //pool[i].transform
                 pool[i].SetActive(true);
                 return;
@@ -50,7 +50,7 @@ public class PoolManager : MonoBehaviour
     void AddToPool(/*UIManager.Fruits*/int type,Vector3 position)
     {
         pool.Add(Instantiate(prefabs[(int)type], position, prefabs[type].transform.rotation));
-        pool[pool.Count-1].transform.rotation.SetAxisAngle(Vector3.up, this.transform.rotation.eulerAngles.y);
+        pool[pool.Count-1].transform.Rotate(Vector3.up, this.transform.rotation.eulerAngles.y,Space.World);
     }
 
     public static void Delete(GameObject poolObject)

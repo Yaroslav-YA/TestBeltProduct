@@ -96,6 +96,7 @@ public class IKControl : MonoBehaviour
                     }
                     Debug.Log(newPosition.y) ;
                     rightHandObj.parent.position = newPosition;
+                    //rightHandObj.parent.Rotate
                 }
             }
         }
@@ -141,7 +142,7 @@ public class IKControl : MonoBehaviour
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
                     */
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, speed);
-                   // animator.SetIKRotationWeight(AvatarIKGoal.RightHand, speed);
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0.5f);
                     animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position); //Vector3.Lerp(animator.GetIKPosition(AvatarIKGoal.RightHand), rightHandObj.position,speed*Time.deltaTime));
                     animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                     //smooth += Mathf.Clamp(speed * Time.deltaTime,0,1);
