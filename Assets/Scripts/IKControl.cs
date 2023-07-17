@@ -48,7 +48,14 @@ public class IKControl : MonoBehaviour
     public float lerp_speed=0.5f;
     public float lerp=0;
     public float height=0.2f;
+    bool isOld = true;
 
+    public delegate void DropInBasket();
+    public static event DropInBasket onDropInBasket;
+
+
+
+    
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -60,12 +67,22 @@ public class IKControl : MonoBehaviour
         currentTaskNumber = Random.Range(min, max);
         currentTaskTag=fruits[Random.Range(0, fruits.Length - 1)];
         UIManager.UpdateTask(currentTaskNumber,currentTaskTag);*/
+       
+    }
+
+    private void OnEnable()
+    {
         ScoreManager.onTaskComplete += FinishGame;
+    }
+
+    private void OnDisable()
+    {
+        ScoreManager.onTaskComplete -= FinishGame;
     }
 
     private void Update()
     {
-        if (rightHandObj != null)
+        if (rightHandObj != null&&!isOld)
         {
             if (!isGrab)
             {
@@ -94,7 +111,7 @@ public class IKControl : MonoBehaviour
 
                         newPosition.y+= Mathf.Sin(lerp * Mathf.PI)*height;
                     }
-                    Debug.Log(newPosition.y) ;
+                    //Debug.Log(newPosition.y) ;
                     rightHandObj.parent.position = newPosition;
                     //rightHandObj.parent.Rotate
                 }
@@ -106,6 +123,8 @@ public class IKControl : MonoBehaviour
                 //if(hit.transform.CompareTag(currentTaskTag))
                 rightHandObj = hit.transform.Find(handle);
                 lookObj = hit.transform;
+                isOld = false;
+                animator.SetBool("LookAt Bool", true);
             }
         }
     }
@@ -125,7 +144,6 @@ public class IKControl : MonoBehaviour
                 // Set the look target position, if one has been assigned
                 if (lookObj != null)
                 {
-                    animator.SetBool("LookAt Bool",true);
                     animator.SetLookAtWeight(headSpeed);
                     //Debug.Log("HeadSpeed"+headSpeed);
                     animator.SetLookAtPosition(lookObj.position);
@@ -195,7 +213,7 @@ public class IKControl : MonoBehaviour
         //fruit = animator.GetBoneTransform(HumanBodyBones.RightHand);
         oldPosition = fruit.position;
         isGrab = true;
-        animator.SetTrigger("Drop");
+        //animator.SetTrigger("Drop");
     }
     
     public /*static*/ void Drop(Transform fruit)
@@ -204,14 +222,17 @@ public class IKControl : MonoBehaviour
         fruit.GetComponent<Rigidbody>().isKinematic = false;
 
         //fruit.GetComponent<Collider>().enabled = true;
-        rightHandObj = null;
-        lookObj = null;
+        //rightHandObj = null;
+        //lookObj = null;
+        isOld = true;
         isGrab = false;
         isNear = false;
+        //Debug.Log("Idle");
+        animator.SetBool("LookAt Bool", false);
         animator.SetTrigger("Idle");
         if (fruit.CompareTag(ScoreManager.GetCurrentTaskTag()))
         {
-            EventManager.Drop();
+            onDropInBasket?.Invoke();
             /*ReachBasket.PopUp();
             AddScore();*/
         }
@@ -229,6 +250,8 @@ public class IKControl : MonoBehaviour
     */
     void FinishGame()
     {
+        rightHandObj = null;
+        lookObj = null;
         Camera.main.GetComponent<Animator>().SetTrigger("Dance");
         animator.SetTrigger("Dance");
         

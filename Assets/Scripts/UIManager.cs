@@ -11,8 +11,17 @@ public class UIManager : MonoBehaviour
     public static string win_sample = "Level Passed";
     public Button reset_button;
     public static UIManager instance;
-    
-    
+
+    private void OnEnable()
+    {
+        ScoreManager.onTaskUpdate += UpdateTask;
+        ScoreManager.onTaskComplete += WinText;
+    }
+    private void OnDisable()
+    {
+        ScoreManager.onTaskUpdate -= UpdateTask;
+        ScoreManager.onTaskComplete -= WinText;
+    }
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,8 +30,8 @@ public class UIManager : MonoBehaviour
             instance = this;
         }
         task = GetComponent<TMP_Text>();
-        ScoreManager.onTaskUpdate += UpdateTask;
-        ScoreManager.onTaskComplete += WinText;
+        reset_button.gameObject.SetActive(false);
+        
         //Debug.Log(task);
         //task.text += task_sample+IKControl.currentTaskNumber+" " + IKControl.currentTaskTag+'s';   
     }

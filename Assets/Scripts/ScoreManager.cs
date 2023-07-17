@@ -23,7 +23,17 @@ public class ScoreManager : MonoBehaviour
     {
         GenerateTask();
         onTaskUpdate?.Invoke(currentTaskNumber, currentTaskTag);
-        EventManager.onDropInBasket += AddScore;
+        
+    }
+
+    private void OnEnable()
+    {
+        IKControl.onDropInBasket += AddScore;
+    }
+
+    private void OnDisable()
+    {
+        IKControl.onDropInBasket -= AddScore;
     }
 
     void GenerateTask()
@@ -38,6 +48,7 @@ public class ScoreManager : MonoBehaviour
         if (currentNumber >= currentTaskNumber)
         {
             FinishGame();
+            return;
         }
         onTaskUpdate?.Invoke(currentTaskNumber - currentNumber, currentTaskTag);
     }
@@ -49,7 +60,7 @@ public class ScoreManager : MonoBehaviour
 
     public static string GetCurrentTaskTag()
     {
-        Debug.Log(currentTaskTag);
+        //Debug.Log(currentTaskTag);
         return currentTaskTag;
     }
 }
