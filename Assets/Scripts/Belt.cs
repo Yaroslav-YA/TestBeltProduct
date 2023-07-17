@@ -22,4 +22,19 @@ public class Belt : MonoBehaviour
     {
         collision.gameObject.transform.Translate(belt_speed*Time.fixedDeltaTime, 0, 0,this.transform);
     }
+
+    private void OnEnable()
+    {
+        ScoreManager.onTaskComplete += DestroyBelt;
+    }
+
+    private void OnDisable()
+    {
+        ScoreManager.onTaskComplete -= DestroyBelt;
+    }
+
+    void DestroyBelt()
+    {
+        Destroy(gameObject);
+    }
 }

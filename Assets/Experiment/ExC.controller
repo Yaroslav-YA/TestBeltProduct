@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LookAt
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 113393030579699356}
@@ -62,7 +62,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: ReturnToIdle
-  m_Speed: -1
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3043362262444662725}
@@ -75,7 +75,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 502c7bbe3c86f004da18d1da3caa3d16, type: 2}
+  m_Motion: {fileID: 7400000, guid: ba3595cc963de984b8ecadca9bd24908, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: LookAt Bool

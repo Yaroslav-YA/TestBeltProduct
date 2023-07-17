@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
@@ -44,6 +45,8 @@ public class IKControl : MonoBehaviour
     public float headSpeed = 0;
     [Range(0, 1)]
     public float rigthHandRotationWeight = 0;
+    /*[SerializeField] MultiAimConstraint multiAimConstraint;
+    [SerializeField] RigBuilder rigBuilder;*/
 
     public float lerp_speed=0.5f;
     public float lerp=0;
@@ -122,6 +125,8 @@ public class IKControl : MonoBehaviour
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit)){
                 //if(hit.transform.CompareTag(currentTaskTag))
                 rightHandObj = hit.transform.Find(handle);
+                /*multiAimConstraint.data.constrainedObject = hit.transform;
+                rigBuilder.Build();*/
                 lookObj = hit.transform;
                 isOld = false;
                 animator.SetBool("LookAt Bool", true);
@@ -213,7 +218,7 @@ public class IKControl : MonoBehaviour
         //fruit = animator.GetBoneTransform(HumanBodyBones.RightHand);
         oldPosition = fruit.position;
         isGrab = true;
-        //animator.SetTrigger("Drop");
+        animator.SetTrigger("Grab");
     }
     
     public /*static*/ void Drop(Transform fruit)
