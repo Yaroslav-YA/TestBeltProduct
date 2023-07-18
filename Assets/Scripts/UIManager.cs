@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static TMP_Text task;
-    public static string task_sample = "Collect ";
-    public static string win_sample = "Level Passed";
+    TMP_Text task;
+    string task_sample = "Collect ";
+    string win_sample = "Level Passed";
     public Button reset_button;
-    public static UIManager instance;
+    
 
     private void OnEnable()
     {
@@ -25,18 +25,11 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
         task = GetComponent<TMP_Text>();
-        reset_button.gameObject.SetActive(false);
-        
-        //Debug.Log(task);
-        //task.text += task_sample+IKControl.currentTaskNumber+" " + IKControl.currentTaskTag+'s';   
+        reset_button.gameObject.SetActive(false); 
     }
 
-    public static void UpdateTask(int currentTaskNumber,string currentTaskTag)
+    public void UpdateTask(int currentTaskNumber,string currentTaskTag)
     {
         task.text = task_sample + currentTaskNumber + " " + currentTaskTag;
         if (currentTaskNumber > 1)

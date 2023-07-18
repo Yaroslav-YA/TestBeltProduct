@@ -9,68 +9,41 @@ public class IKControl : MonoBehaviour
 {
     protected static Animator animator;
 
-    public static IKControl Control;
-
-    //List<GameObject> disableOnFinish = new List<GameObject>();
-
     RaycastHit hit;
 
-    public static string currentTaskTag;
     string handle = "Handle";
-    string[] fruits;
 
-    public bool ikActive = false;
-    public static bool isGrab = false;
-    public bool isNear = false;
+    [SerializeField] bool ikActive = true;
+    bool isGrab = false;
+    bool isNear = false;
 
-    public static int currentTaskNumber;
-    //int currentNumber = 0;
-    int min = 1;
-    int max = 6;
-
+    [SerializeField] Transform dropPoint = null;
     public Transform rightHandObj = null;
-    public Transform leftHandObj = null;
     public Transform lookObj = null;
-    public Transform dropPoint = null;
 
     Vector3 oldPosition;
     Vector3 newPosition;
 
-    public float middleDistance = 0.5f;
-    public float nearDistance = 0.1f;
-    //float smooth = 0;
+    [SerializeField] float middleDistance = 0.69f;
+    [SerializeField] float nearDistance = 0.05f;
     [Range(0,1)]
     public float speed = 0;
     [Range(0, 1)]
     public float headSpeed = 0;
     [Range(0, 1)]
-    public float rigthHandRotationWeight = 0;
-    /*[SerializeField] MultiAimConstraint multiAimConstraint;
-    [SerializeField] RigBuilder rigBuilder;*/
+    [SerializeField] float rigthHandRotationWeight = 0.5f;
 
-    public float lerp_speed=0.5f;
-    public float lerp=0;
-    public float height=0.2f;
+    [SerializeField] float lerp_speed=0.5f;
+    float lerp=0;
+    [SerializeField] float height=0.2f;
     bool isOld = true;
 
     public delegate void DropInBasket();
     public static event DropInBasket onDropInBasket;
-
-
-
-    
+        
     void Start()
     {
         animator = GetComponent<Animator>();
-        if (Control==null)
-        {
-            Control = this;
-        }
-        /*fruits = System.Enum.GetNames(typeof(Enums.Fruits));
-        currentTaskNumber = Random.Range(min, max);
-        currentTaskTag=fruits[Random.Range(0, fruits.Length - 1)];
-        UIManager.UpdateTask(currentTaskNumber,currentTaskTag);*/
-       
     }
 
     private void OnEnable()
@@ -108,25 +81,20 @@ public class IKControl : MonoBehaviour
                 else
                 {
                     lerp += lerp_speed * Time.deltaTime;
-                    newPosition = Vector3.Lerp(/*rightHandObj.parent.position*/oldPosition, dropPoint.position, lerp);//save old position and calc from its
+                    newPosition = Vector3.Lerp(oldPosition, dropPoint.position, lerp);//save old position and calc from its
                     if (lerp < 1)
                     {
 
                         newPosition.y+= Mathf.Sin(lerp * Mathf.PI)*height;
                     }
-                    //Debug.Log(newPosition.y) ;
                     rightHandObj.parent.position = newPosition;
-                    //rightHandObj.parent.Rotate
                 }
             }
         }
         if (Input.GetMouseButtonDown(0)&&!isGrab)
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),out hit)){
-                //if(hit.transform.CompareTag(currentTaskTag))
                 rightHandObj = hit.transform.Find(handle);
-                /*multiAimConstraint.data.constrainedObject = hit.transform;
-                rigBuilder.Build();*/
                 lookObj = hit.transform;
                 isOld = false;
                 animator.SetBool("LookAt Bool", true);
@@ -150,7 +118,6 @@ public class IKControl : MonoBehaviour
                 if (lookObj != null)
                 {
                     animator.SetLookAtWeight(headSpeed);
-                    //Debug.Log("HeadSpeed"+headSpeed);
                     animator.SetLookAtPosition(lookObj.position);
                 }
                 else
@@ -161,37 +128,24 @@ public class IKControl : MonoBehaviour
                 // Set the right hand target position and rotation, if one has been assigned
                 if (rightHandObj != null)
                 {
-                    /*animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
-                    */
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, speed);
-                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0.5f);
-                    animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position); //Vector3.Lerp(animator.GetIKPosition(AvatarIKGoal.RightHand), rightHandObj.position,speed*Time.deltaTime));
+                    animator.SetIKRotationWeight(AvatarIKGoal.RightHand, rigthHandRotationWeight);
+                    animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position); 
                     animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
-                    //smooth += Mathf.Clamp(speed * Time.deltaTime,0,1);
+                    
                 }
-                /*if (leftHandObj != null)
-                {
-                    animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
-                    animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
-
-                    animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position); 
-                    animator.SetIKRotation(AvatarIKGoal.LeftHand, leftHandObj.rotation);
-                }*/
 
             }
-
             //if the IK is not active, set the position and rotation of the hand and head back to the original position
             else
-            {
-                //smooth = 0;
+            {                
                 animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
                 animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0);
                 animator.SetLookAtWeight(0);
             }
         }
     }
-    public bool IsObjectNear(float distance)
+    bool IsObjectNear(float distance)
     {
         if ((animator.GetBoneTransform(HumanBodyBones.RightHand).position - rightHandObj.position).sqrMagnitude < distance*distance)
         {
@@ -202,57 +156,34 @@ public class IKControl : MonoBehaviour
             return false;
         }
     }
-    public void Near()
+    void Near()
     {
         isNear = true;
         animator.SetTrigger("Near");
     }
 
-    public void Grab(Transform fruit)
+    void Grab(Transform fruit)
     {
-        //rightHandObj.parent.GetComponent<Rigidbody>().isKinematic = true;
-        //rightHandObj.parent = animator.GetBoneTransform(HumanBodyBones.RightHand);
-        // if () ;
         fruit.GetComponent<Rigidbody>().isKinematic = true;
-        //fruit.GetComponent<Collider>().enabled = false;
-        //fruit = animator.GetBoneTransform(HumanBodyBones.RightHand);
         oldPosition = fruit.position;
         isGrab = true;
         animator.SetTrigger("Grab");
     }
     
-    public /*static*/ void Drop(Transform fruit)
+    void Drop(Transform fruit)
     {
 
         fruit.GetComponent<Rigidbody>().isKinematic = false;
-
-        //fruit.GetComponent<Collider>().enabled = true;
-        //rightHandObj = null;
-        //lookObj = null;
         isOld = true;
         isGrab = false;
         isNear = false;
-        //Debug.Log("Idle");
         animator.SetBool("LookAt Bool", false);
         animator.SetTrigger("Idle");
         if (fruit.CompareTag(ScoreManager.GetCurrentTaskTag()))
         {
             onDropInBasket?.Invoke();
-            /*ReachBasket.PopUp();
-            AddScore();*/
         }
     }
-
-    /*void AddScore()
-    {
-        currentNumber++;
-        if (currentNumber >= currentTaskNumber)
-        {
-            FinishGame();
-        }
-        UIManager.UpdateTask(currentTaskNumber - currentNumber, currentTaskTag);
-    }
-    */
     void FinishGame()
     {
         rightHandObj = null;
@@ -261,9 +192,4 @@ public class IKControl : MonoBehaviour
         animator.SetTrigger("Dance");
         
     }
-    /*
-    public void ReloadLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }*/
 }

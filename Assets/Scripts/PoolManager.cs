@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public List<GameObject> prefabs = new List<GameObject>();
+    [SerializeField] List<GameObject> prefabs = new List<GameObject>();
     List<GameObject> pool = new List<GameObject>();
 
-    public float randomDistance = 1;
-    public float timeBetween = 1;
+    [SerializeField] float randomDistance = 0.12f;
+    [SerializeField] float timeBetween = 1;
     public static bool isPlay=true;
 
 
@@ -39,7 +39,6 @@ public class PoolManager : MonoBehaviour
                 pool[i].transform.position = position;
                 pool[i].transform.rotation =prefabs[(int)type].transform.rotation;
                 pool[i].transform.Rotate(Vector3.up, this.transform.rotation.eulerAngles.y, Space.World);
-                //pool[i].transform
                 pool[i].SetActive(true);
                 return;
             }
@@ -47,7 +46,7 @@ public class PoolManager : MonoBehaviour
         AddToPool((int)type,position);
     }
 
-    void AddToPool(/*UIManager.Fruits*/int type,Vector3 position)
+    void AddToPool(int type,Vector3 position)
     {
         pool.Add(Instantiate(prefabs[(int)type], position, prefabs[type].transform.rotation));
         pool[pool.Count-1].transform.Rotate(Vector3.up, this.transform.rotation.eulerAngles.y,Space.World);

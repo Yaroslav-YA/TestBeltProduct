@@ -10,7 +10,7 @@ public class TaskManager : MonoBehaviour
     
     int min = 0;
     int max = 5;
-
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -19,5 +19,5 @@ public class TaskManager : MonoBehaviour
         currentTaskTag = fruits[Random.Range(0, fruits.Length - 1)];
         UIManager.UpdateTask(currentTaskNumber, currentTaskTag);
     }
-
+    */
 }

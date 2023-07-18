@@ -1877,18 +1877,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ikActive: 1
-  isNear: 0
-  rightHandObj: {fileID: 0}
-  leftHandObj: {fileID: 1177246842}
-  lookObj: {fileID: 0}
   dropPoint: {fileID: 1177246841}
+  rightHandObj: {fileID: 0}
+  lookObj: {fileID: 0}
   middleDistance: 0.69
   nearDistance: 0.05
   speed: 0
   headSpeed: 0
-  rigthHandRotationWeight: 0
+  rigthHandRotationWeight: 0.5
   lerp_speed: 0.5
-  lerp: 0
   height: 0.2
 --- !u!1 &1962207251
 GameObject:
