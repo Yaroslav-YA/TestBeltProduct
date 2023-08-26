@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 581357071}
   - component: {fileID: 581357070}
   - component: {fileID: 581357069}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1150,7 +1150,7 @@ GameObject:
   - component: {fileID: 1489301768}
   - component: {fileID: 1489301767}
   - component: {fileID: 1489301766}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1247,7 +1247,7 @@ GameObject:
   - component: {fileID: 1527039089}
   - component: {fileID: 1527039091}
   - component: {fileID: 1527039090}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: EndOfBelt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1335,7 +1335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1737174335}
   - component: {fileID: 1737174334}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FruitSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1900,7 +1900,7 @@ GameObject:
   - component: {fileID: 1962207253}
   - component: {fileID: 1962207252}
   - component: {fileID: 1962207256}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Belt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
